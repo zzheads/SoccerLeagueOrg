@@ -1,6 +1,6 @@
 package com.zzheads.model;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Players {
 
@@ -40,7 +40,43 @@ public class Players {
                 new Player("Johnny", "Thunder", 47, false),
                 new Player("Ryan", "Creedson", 43, false)
         };
-
     }
 
+    public static int countFree (ArrayList<Player> players) {
+        int count = 0;
+        for (int i=0;i<players.size();i++) {
+            if (players.get(i).getInTeam().equals("")) {
+              count++;
+            }
+        }
+        return count;
+    }
+
+    public static ArrayList<Integer> heightsIn (Team team) { // return array of heights of players in team
+        ArrayList<Integer> heights = new ArrayList<>();
+        for (int i=0;i<team.getPlayers().size();i++) {
+            if (!heights.contains(team.getPlayers().get(i).getHeightInInches())) {
+                heights.add(team.getPlayers().get(i).getHeightInInches());
+            }
+        }
+        return heights;
+    }
+
+    public static String howManyDiffHeightsInTeam (Team team) { // String in format:   Height - XX players | Height - XX players | ...
+        String result="         ";
+        int curH=0, count=0;
+        team.getPlayers().sort(Player::compareByHeight);
+        for (int i=0;i<team.getPlayers().size();i++) {
+            if (curH>0 && curH!=team.getPlayers().get(i).getHeightInInches()) {
+                result = result +curH+" - "+count+" | ";
+                count=0;
+            }
+            curH = team.getPlayers().get(i).getHeightInInches();
+            count++;
+            if (i==(team.getPlayers().size()-1)) {
+                result = result +curH+" - "+count+" |";
+            }
+        }
+        return result;
+    }
 }

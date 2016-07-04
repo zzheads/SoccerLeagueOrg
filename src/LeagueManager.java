@@ -5,6 +5,8 @@ import com.zzheads.model.Team;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static com.zzheads.model.Players.howManyDiffHeightsInTeam;
+
 public class LeagueManager {
 
     public static void main(String[] args) {
@@ -19,7 +21,7 @@ public class LeagueManager {
         playersList.sort(Player::compareTo);
 
         ArrayList<Team> teams = new ArrayList<>();
-        teams.add(0, new Team("Montreal Canadiens","Brett Hull"));
+        teams.add(0, new Team("Montreal Canadiens","Brett Hull")); // added just for debugging
         teams.add(1, new Team("CSKA","Victor Tikhonov"));
         teams.add(2, new Team("Pittsburg Penguins","Mario Lemeux"));
 
@@ -31,8 +33,12 @@ public class LeagueManager {
             choice = promptForAction();
             switch (choice) {
                 case 1:
-                    Team newTeam = createTeam();
-                    teams.add(newTeam);
+                    if (Players.countFree(playersList)>0) {
+                        Team newTeam = createTeam();
+                        teams.add(newTeam);
+                    } else {
+                        System.out.printf("%n%nError. There is no free players, you can't add more teams.");
+                    }
                     break;
                 case 2:
                     addPlayer(teams, playersList);
@@ -127,7 +133,8 @@ public class LeagueManager {
     }
 
     public static void playersReport (ArrayList<Player>playersList) {
-        String format = "%d. %30s ; " +"\t"+"\t"+"height: %d in; "+"\t"+"exp: %s ; "+"\t"+"team: %s %n";
+        System.out.printf("   Name:                      Height(inches):     Exp:           Team:%n------------------------------------------------------------------------------------%n");
+        String format = "%d. %-20s  " +"\t"+"\t"+" %d           "+"\t"+" %s "+"\t"+" %s %n";
         for (int i=0;i<playersList.size();i++) {
             System.out.printf(format,
                     i+1,
@@ -142,9 +149,9 @@ public class LeagueManager {
         ArrayList <Player> sorted = team.getPlayers();
         sorted.sort(Player::compareByHeight);
 
-        System.out.printf("%n%nTeam: %s | Coach: %s%n----------------------%n%n",team.getTeamName(),team.getCoach());
-        System.out.printf("Height:     Player name:%n");
-        String format = "%3d in     %s %n";
+        System.out.printf("%n%nTeam: %s | Coach: %s%n---------------------------------------%n",team.getTeamName(),team.getCoach());
+        System.out.printf("Height(inches):     Player name:%n");
+        String format = "%3d             %s %n";
         for (int i=0;i<sorted.size();i++) {
             System.out.printf(format, sorted.get(i).getHeightInInches(), sorted.get(i).getLastName()+" "+sorted.get(i).getFirstName());
         }
@@ -152,9 +159,22 @@ public class LeagueManager {
 
 
     public static void leagueBalanceReport (ArrayList<Team> teams) {
-        System.out.printf("%n%n    Team:                  Experienced players - Unexperienced players%n----------------------------------------%n");
+        String heightsResult = "";
+        int expLevel=0;
+        System.out.printf("%n%n    Team:                        Exp - Unexp players   ExpLevel     Height - players%n-------------------------------------------------------------------------------------------------- %n");
         for (int i=0;i<teams.size();i++) {
-            System.out.printf("%d. %s                                   %d - %d%n",i+1,teams.get(i).getTeamName(),teams.get(i).expCount(),teams.get(i).unexpCount());
+            heightsResult = "%d. %-20s              %d - %d            %3d   "+howManyDiffHeightsInTeam(teams.get(i))+"%n";
+            if (teams.get(i).getPlayers().size()>0) {
+                expLevel = teams.get(i).expCount()*100/teams.get(i).getPlayers().size();
+            } else {
+                expLevel = 0;
+            }
+            System.out.printf(heightsResult,
+                    i+1,
+                    teams.get(i).getTeamName(),
+                    teams.get(i).expCount(),
+                    teams.get(i).unexpCount(),
+                    expLevel);
         }
     }
 

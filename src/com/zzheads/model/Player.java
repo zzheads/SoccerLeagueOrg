@@ -67,6 +67,16 @@ public class Player implements Comparable<Player>, Serializable {
         return name_1.compareTo(name_2);
     }
 
+    public  int compareByHeight (Player other) {
+        if (getHeightInInches() > other.getHeightInInches()) {
+            return 1;
+        }
+        if (getHeightInInches() < other.getHeightInInches()) {
+            return -1;
+        }
+        return 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

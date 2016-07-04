@@ -46,20 +46,49 @@ public class Team {
         mPlayers = new ArrayList<Player>();
     }
 
-    public void add (Player player) {
+    public int compareTo (Team other) {
+        return (this.getTeamName().compareTo(other.getTeamName()));
+    }
+
+    public int expCount () {
+        int count = 0;
+        for (int i=0;i<getPlayers().size();i++) {
+            if (getPlayers().get(i).isPreviousExperience()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int unexpCount () {
+        int count = 0;
+        for (int i=0;i<getPlayers().size();i++) {
+            if (!getPlayers().get(i).isPreviousExperience()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public boolean add (Player player) {
         if (player.getInTeam()=="") {
             mPlayers.add(player);
+            player.setInTeam(getTeamName());
+            return true;
         } else { // player can not be added, he is already in team
             System.out.printf("Error. Can't add %s to  %s team, he is already in %s team.", player.getFirstName()+" "+player.getLastName(), mTeamName, player.getInTeam());
+            return false;
         }
     }
 
-    public void remove (Player player) {
+    public boolean remove (Player player) {
         if (mPlayers.contains(player)) { // Yes, such player in our team
             mPlayers.remove(player);     // delete him from team
             player.setInTeam("");
+            return true;
         } else {
             System.out.printf("Error. Can't remove %s from %s team, there is no such player in that team.", player.getFirstName() + " " + player.getLastName(), mTeamName);
+            return false;
         }
     }
 }

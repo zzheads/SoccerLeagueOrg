@@ -35,7 +35,8 @@ public class LeagueManager {
             choice = promptForAction();
             switch (choice) {
                 case 1:
-                    createTeam();
+                    Team newTeam = createTeam();
+                    teams.add(newTeam);
                     break;
                 case 2:
                     addPlayer();
@@ -58,11 +59,10 @@ public class LeagueManager {
         }
     }
 
-
     public static int promptForAction() {
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
         int choice=0;
         System.out.printf("%n%n Select an action: %n ___________________%n 1. Create team%n 2. Add player to a team%n 3. Remove player from the team 4.View report grouped by height%n 5. View league balance report%n 6. Print roster of the team%n 7. Exit%n");
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
         while (choice<1 || choice>7) {
             System.out.printf(" ___________________%n%nEnter your choice: ");
             choice = reader.nextInt();
@@ -75,8 +75,21 @@ public class LeagueManager {
         System.out.flush();
     }
 
-    public static void createTeam () {
+    public static int chooseTeam () {
+        return 0;
+    }
 
+    public static int choosePlayer () {
+        return 0;
+    }
+    
+    public static Team createTeam () {
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.printf("%nEnter the name of new team: %n");
+        String newName = reader.nextLine();
+        System.out.printf("Enter the coach name of new team: %n ");
+        String newCoach = reader.nextLine();
+        return (new Team(newName,newCoach));
     }
 
     public static void addPlayer () {

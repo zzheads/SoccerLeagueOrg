@@ -10,6 +10,36 @@ public class Team {
     String mCoach;
     private ArrayList<Player> mPlayers;
 
+    public Team(String teamName, String coach) {
+        mTeamName = teamName;
+        mCoach = coach;
+        mPlayers = new ArrayList<>();
+    }
+
+    public String getTeamName() {
+        return mTeamName;
+    }
+
+    public void setTeamName(String teamName) {
+        mTeamName = teamName;
+    }
+
+    public String getCoach() {
+        return mCoach;
+    }
+
+    public void setCoach(String coach) {
+        mCoach = coach;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return mPlayers;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        mPlayers = players;
+    }
+
     public void Team (String name, String coach) {
         mTeamName = name;
         mCoach = coach;

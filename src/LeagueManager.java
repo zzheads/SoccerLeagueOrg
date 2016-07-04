@@ -29,19 +29,50 @@ public class LeagueManager {
                     playersList.get(i).isPreviousExperience(),
                     playersList.get(i).getInTeam());
         }
-        int choice = promptForAction ();
-
+        // clearScreen();
+        int choice = 0;
+        while (choice!=7) {
+            choice = promptForAction();
+            switch (choice) {
+                case 1:
+                    createTeam();
+                    break;
+                case 2:
+                    addPlayer();
+                    break;
+                case 3:
+                    removePlayer();
+                    break;
+                case 4:
+                    heightReport();
+                    break;
+                case 5:
+                    leagueBalanceReport();
+                    break;
+                case 6:
+                    rosterReport();
+                    break;
+                case 7:
+                    break;
+            }
+        }
     }
+
 
     public static int promptForAction() {
         int choice=0;
-        System.out.printf("%n%n Select an action: %n ___________________%n 1. Create team%n 2. Add player to a team%n 3. Remove player from the team 4.View report grouped by height%n 5. View league balance report%n 6. Print roster of the team%n");
+        System.out.printf("%n%n Select an action: %n ___________________%n 1. Create team%n 2. Add player to a team%n 3. Remove player from the team 4.View report grouped by height%n 5. View league balance report%n 6. Print roster of the team%n 7. Exit%n");
         Scanner reader = new Scanner(System.in);  // Reading from System.in
-        while (choice<1 || choice>6) {
-            System.out.println("%n ___________________Enter your choice: ");
+        while (choice<1 || choice>7) {
+            System.out.printf(" ___________________%n%nEnter your choice: ");
             choice = reader.nextInt();
         }
         return choice;
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public static void createTeam () {

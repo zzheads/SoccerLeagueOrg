@@ -29,7 +29,7 @@ public class LeagueManager {
         playersReport(playersList);
         // clearScreen();
         int choice = 0;
-        while (choice!=7) {
+        while (choice!=8) {
             choice = promptForAction();
             switch (choice) {
                 case 1:
@@ -56,6 +56,9 @@ public class LeagueManager {
                     rosterReport(teams.get(chooseTeam(teams)));
                     break;
                 case 7:
+                    autoBuildTeams(teams, playersList);
+                    break;
+                case 8:
                     break;
             }
         }
@@ -64,8 +67,8 @@ public class LeagueManager {
     public static int promptForAction() {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         int choice=0;
-        System.out.printf("%n%n Select an action: %n ___________________%n 1. Create team%n 2. Add player to a team%n 3. Remove player from the team%n 4. View report grouped by height%n 5. View league balance report%n 6. Print roster of the team%n 7. Exit%n");
-        while (choice<1 || choice>7) {
+        System.out.printf("%n%n Select an action: %n ___________________%n 1. Create team%n 2. Add player to a team%n 3. Remove player from the team%n 4. View report grouped by height%n 5. View league balance report%n 6. Print roster of the team%n 7. Auto build teams%n 8. Exit%n");
+        while (choice<1 || choice>8) {
             System.out.printf(" ___________________%n%nEnter your choice: ");
             choice = reader.nextInt();
         }
@@ -157,7 +160,6 @@ public class LeagueManager {
         }
     }
 
-
     public static void leagueBalanceReport (ArrayList<Team> teams) {
         String heightsResult = "";
         int expLevel=0;
@@ -176,6 +178,22 @@ public class LeagueManager {
                     teams.get(i).unexpCount(),
                     expLevel);
         }
+    }
+
+    public static void autoBuildTeams (ArrayList<Team> teams, ArrayList<Player> players) {
+        int countTeams = teams.size();
+        int countPlayers = players.size();
+        int averageAddEachTeam = Math.round(countPlayers/countTeams);
+        players.sort(Player::compareByImportance);
+        for (int i=0;i<players.size();) {
+            for (int j=0;j<teams.size();j++) {
+                if (teams.get(j).getPlayers().size()<11) {
+                    teams.get(j).add(players.get(i));
+                    i++;
+                }
+            }
+        }
+
     }
 
     public static void rosterReport (Team team) {

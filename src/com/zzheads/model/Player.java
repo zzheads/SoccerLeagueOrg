@@ -10,6 +10,7 @@ public class Player implements Comparable<Player>, Serializable {
     private int heightInInches;
     private boolean previousExperience;
     private String inTeam;
+    private int mImportance;
 
     public Player(String firstName, String lastName, int heightInInches, boolean previousExperience) {
         this.firstName = firstName;
@@ -17,6 +18,12 @@ public class Player implements Comparable<Player>, Serializable {
         this.heightInInches = heightInInches;
         this.previousExperience = previousExperience;
         this.inTeam = ""; // our Player is not in any team
+        // maximum difference in heights between players is 10 inches, so weight of previous experience must be 10 also...
+        if (previousExperience) {
+            this.mImportance = (heightInInches + 10) / 20;
+        } else {
+            this.mImportance = (heightInInches + 0) /20;
+        }
     }
 
     public String getInTeam() {
@@ -59,6 +66,14 @@ public class Player implements Comparable<Player>, Serializable {
         return previousExperience;
     }
 
+    public int getImportance() {
+        return mImportance;
+    }
+
+    public void setImportance(int importance) {
+        mImportance = importance;
+    }
+
     @Override
     public int compareTo(Player other) {
         // We always want to sort by last name then first name
@@ -72,6 +87,16 @@ public class Player implements Comparable<Player>, Serializable {
             return 1;
         }
         if (getHeightInInches() < other.getHeightInInches()) {
+            return -1;
+        }
+        return 0;
+    }
+
+    public  int compareByImportance (Player other) {
+        if (getImportance() > other.getImportance()) {
+            return 1;
+        }
+        if (getImportance() < other.getImportance()) {
             return -1;
         }
         return 0;
@@ -98,4 +123,5 @@ public class Player implements Comparable<Player>, Serializable {
         result = 31 * result + (previousExperience ? 1 : 0);
         return result;
     }
+
 }

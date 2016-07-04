@@ -71,14 +71,17 @@ public class Team {
     }
 
     public boolean add (Player player) {
-        if (player.getInTeam()=="") {
-            mPlayers.add(player);
-            player.setInTeam(getTeamName());
-            return true;
-        } else { // player can not be added, he is already in team
-            System.out.printf("Error. Can't add %s to  %s team, he is already in %s team.", player.getFirstName()+" "+player.getLastName(), mTeamName, player.getInTeam());
+        if (!(player.getInTeam()=="")) {
+            System.out.printf("Error. Can't add %s to  %s team, he is already in %s team.", player.getFirstName() + " " + player.getLastName(), mTeamName, player.getInTeam());
             return false;
         }
+        if (getPlayers().size()>=11) {
+            System.out.printf("Error. Can't add %s to  %s, that team is full.", player.getFirstName() + " " + player.getLastName(), mTeamName, player.getInTeam());
+            return false;
+        }
+        mPlayers.add(player);
+        player.setInTeam(getTeamName());
+        return true;
     }
 
     public boolean remove (Player player) {

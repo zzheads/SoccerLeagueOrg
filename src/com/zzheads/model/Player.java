@@ -9,11 +9,37 @@ public class Player implements Comparable<Player>, Serializable {
     private String lastName;
     private int heightInInches;
     private boolean previousExperience;
+    private String inTeam;
 
     public Player(String firstName, String lastName, int heightInInches, boolean previousExperience) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.heightInInches = heightInInches;
+        this.previousExperience = previousExperience;
+        this.inTeam = ""; // our Player is not in any team
+    }
+
+    public String getInTeam() {
+        return inTeam;
+    }
+
+    public void setInTeam(String inTeam) {
+        this.inTeam = inTeam;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setHeightInInches(int heightInInches) {
+        this.heightInInches = heightInInches;
+    }
+
+    public void setPreviousExperience(boolean previousExperience) {
         this.previousExperience = previousExperience;
     }
 
@@ -36,7 +62,9 @@ public class Player implements Comparable<Player>, Serializable {
     @Override
     public int compareTo(Player other) {
         // We always want to sort by last name then first name
-        return 0;
+        String name_1 = getLastName()+getFirstName();
+        String name_2 = other.getLastName()+other.getFirstName();
+        return name_1.compareTo(name_2);
     }
 
     @Override
@@ -50,7 +78,6 @@ public class Player implements Comparable<Player>, Serializable {
         if (previousExperience != player.previousExperience) return false;
         if (!firstName.equals(player.firstName)) return false;
         return lastName.equals(player.lastName);
-
     }
 
     @Override
